@@ -7,16 +7,18 @@ function raporToGPA(score) {
   return 2.0;
 }
 
-function acceptanceProbability(gpa, uni) {
+function acceptanceProbability(gpa, uni, major = "general") {
   const diff = gpa - uni.avgGPA;
   let base = 50 + diff * 100;
 
-  let rankFactor = 1;
-  if (uni.rank <= 10) rankFactor = 0.4;
-  else if (uni.rank <= 30) rankFactor = 0.6;
-  else rankFactor = 0.8;
-
+  let rankFactor = uni.rank <= 10 ? 0.4 : uni.rank <= 30 ? 0.6 : 0.8;
   let prob = base * rankFactor;
+
+  if (major === "cs") prob *= 0.85;
+  if (major === "engineering") prob *= 0.9;
+  if (major === "medicine") prob *= 0.8;
+  if (major === "business") prob *= 0.95;
+
   return Math.max(5, Math.min(95, Math.round(prob)));
 }
 
@@ -26,24 +28,19 @@ function classify(prob) {
   return "Reach";
 }
 
-function generateExplanation(gpa, uni) {
-  if (gpa > uni.avgGPA)
-    return "Your GPA is above average, giving you a strong chance.";
-  if (gpa === uni.avgGPA)
-    return "You match the typical admitted student.";
-  return "This is a competitive choice based on your GPA.";
-}
-
 function findUniversities() {
   const type = document.getElementById("inputType").value;
   const raw = parseFloat(document.getElementById("score").value);
+  const major = document.getElementById("major").value;
 
   let gpa = type === "rapor" ? raporToGPA(raw) : raw;
 
   let safety = [], match = [], reach = [];
 
   universities.forEach(uni => {
-    const prob = acceptanceProbability(gpa, uni);
+    if (major !== "general" && !uni.majors[major]) return;
+
+    const prob = acceptanceProbability(gpa, uni, major);
     const category = classify(prob);
 
     const data = { ...uni, prob };
@@ -56,22 +53,21 @@ function findUniversities() {
   const topAI = [...universities]
     .map(u => ({
       ...u,
-      prob: acceptanceProbability(gpa, u)
+      prob: acceptanceProbability(gpa, u, major)
     }))
     .sort((a, b) => b.prob - a.prob)
-    .slice(0, 3);
+    .slice(0, 5);
 
   document.getElementById("results").innerHTML = `
-    <p>Converted GPA: <b>${gpa.toFixed(2)}</b></p>
+    <p>GPA: <b>${gpa.toFixed(2)}</b> | Major: <b>${major.toUpperCase()}</b></p>
 
-    <h2>Recommendations</h2>
+    <h2>🤖 AI Recommendations</h2>
     <div class="grid">
       ${topAI.map(u => `
         <div class="card">
           <h3>${u.name}</h3>
-          <p>${u.country} • #${u.rank}</p>
+          <p>#${u.rank}</p>
           <p>${u.prob}% chance</p>
-          <p>${generateExplanation(gpa, u)}</p>
         </div>
       `).join("")}
     </div>
@@ -91,11 +87,9 @@ function renderSection(title, list, type) {
       ${list.map(u => `
         <div class="card">
           <h3>${u.name}</h3>
-          <p>#${u.rank} • ${u.country}</p>
+          <p>#${u.rank}</p>
           <p>${u.prob}%</p>
-          <div class="bar">
-            <div class="fill" style="width:${u.prob}%"></div>
-          </div>
+          <div class="bar"><div class="fill" style="width:${u.prob}%"></div></div>
           <span class="badge ${type}">${type}</span>
         </div>
       `).join("")}
