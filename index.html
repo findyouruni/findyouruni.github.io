@@ -11,27 +11,38 @@
 
 <body>
 
-  <div class="hero">
-    <h1>🎓 Find Your UNI 🎓</h1>
-    <p>Kel 3: Cherie, Darren, Nadeline, Nathan, Nikita</p>
+<div class="hero">
+  <h1>🎓 Find Your UNI</h1>
+  <p>Kel 3: Cherie, Darren, Madeline, Nathan, Nikita</p>
 
-    <div class="input-card">
-      <select id="inputType">
-        <option value="gpa">GPA</option>
-        <option value="rapor">Rapor (0–100)</option>
-      </select>
+  <div class="input-card">
 
-      <input type="number" id="score" placeholder="Enter your score">
-      <button onclick="findUniversities()">Find Matches</button>
+    <select id="inputType">
+      <option value="gpa">GPA</option>
+      <option value="rapor">Rapor (0–100)</option>
+    </select>
 
-      <p class="hint">Rapor will be converted automatically</p>
-    </div>
+    <select id="major">
+      <option value="general">General</option>
+      <option value="cs">Computer Science</option>
+      <option value="business">Business</option>
+      <option value="engineering">Engineering</option>
+      <option value="medicine">Medicine</option>
+    </select>
+
+    <input type="number" id="score" placeholder="Enter your score">
+
+    <button onclick="findUniversities()">Find Matches</button>
+
+    <p class="hint">Rapor will be converted automatically</p>
+
   </div>
+</div>
 
-  <div id="results" class="results"></div>
+<div id="results" class="results"></div>
 
-  <script src="data.js"></script>
-  <script src="script.js"></script>
+<script src="data.js"></script>
+<script src="script.js"></script>
 
 </body>
 </html>
