@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>UniMatch AI</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+  <div class="hero">
+    <h1>🎓 UniMatch AI</h1>
+    <p>Smart university recommendations powered by data</p>
+
+    <div class="input-card">
+      <select id="inputType">
+        <option value="gpa">GPA</option>
+        <option value="rapor">Rapor (0–100)</option>
+      </select>
+
+      <input type="number" id="score" placeholder="Enter your score">
+      <button onclick="findUniversities()">Find Matches</button>
+
+      <p class="hint">Rapor will be converted automatically</p>
+    </div>
+  </div>
+
+  <div id="results" class="results"></div>
+
+  <script src="data.js"></script>
+  <script src="script.js"></script>
+
+</body>
+</html>
