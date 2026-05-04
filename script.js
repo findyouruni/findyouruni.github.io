@@ -64,7 +64,7 @@ function findUniversities() {
   document.getElementById("results").innerHTML = `
     <p>Converted GPA: <b>${gpa.toFixed(2)}</b></p>
 
-    <h2>🤖 AI Recommendations</h2>
+    <h2>Recommendations</h2>
     <div class="grid">
       ${topAI.map(u => `
         <div class="card">
