@@ -1,45 +1,46 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
   <title>Find Your UNI</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <link rel="stylesheet" href="style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 
 <body>
 
-<div class="hero">
-  <h1>🎓 Find Your UNI</h1>
-  <p>Kel 3: Cherie, Darren, Madeline, Nathan, Nikita</p>
+<h1>🎓 Find Your UNI</h1>
 
-  <div class="input-card">
+<div class="controls">
+  <select id="inputType">
+    <option value="gpa">GPA (0–4)</option>
+    <option value="rapor">Rapor (0–100)</option>
+  </select>
 
-    <select id="inputType">
-      <option value="gpa">GPA</option>
-      <option value="rapor">Rapor (0–100)</option>
-    </select>
+  <input type="number" id="score" placeholder="Enter score">
 
-    <select id="major">
-      <option value="general">General</option>
-      <option value="cs">Computer Science</option>
-      <option value="business">Business</option>
-      <option value="engineering">Engineering</option>
-      <option value="medicine">Medicine</option>
-    </select>
+  <select id="major">
+    <option value="general">General</option>
+    <option value="engineering">Engineering</option>
+    <option value="computer_science">Computer Science</option>
+    <option value="business">Business</option>
+    <option value="economics">Economics</option>
+    <option value="medicine">Medicine</option>
+  </select>
 
-    <input type="number" id="score" placeholder="Enter your score">
-
-    <button onclick="findUniversities()">Find Matches</button>
-
-    <p class="hint">Nilai rapor akan di konversi langsung</p>
-
-  </div>
+  <button onclick="findUniversities()">Find Universities</button>
+  <button onclick="toggleCalculator()">📊 Rapor Calculator</button>
 </div>
 
-<div id="results" class="results"></div>
+<div id="calculator" class="calculator hidden">
+  <h3>Rapor Average Calculator</h3>
+  <input type="number" id="s1" placeholder="Grade 10 Sem 1">
+  <input type="number" id="s2" placeholder="Grade 10 Sem 2">
+  <input type="number" id="s3" placeholder="Grade 11 Sem 1">
+  <input type="number" id="s4" placeholder="Grade 11 Sem 2">
+  <button onclick="calculateAverage()">Calculate</button>
+  <p id="avgResult"></p>
+</div>
+
+<div id="results"></div>
 
 <script src="data.js"></script>
 <script src="script.js"></script>
