@@ -1,98 +1,102 @@
 function raporToGPA(score) {
-  if (score >= 90) return 4.0;
-  if (score >= 85) return 3.7;
-  if (score >= 80) return 3.3;
-  if (score >= 75) return 3.0;
-  if (score >= 70) return 2.7;
-  return 2.0;
+  return (score / 100) * 4;
 }
 
-function acceptanceProbability(gpa, uni, major = "general") {
-  const diff = gpa - uni.avgGPA;
-  let base = 50 + diff * 100;
+function acceptanceProbability(gpa, rank) {
+  let base = 50 + (gpa - 3.5) * 40;
 
-  let rankFactor = uni.rank <= 10 ? 0.4 : uni.rank <= 30 ? 0.6 : 0.8;
-  let prob = base * rankFactor;
+  if (rank <= 10) base *= 0.4;
+  else if (rank <= 30) base *= 0.6;
+  else base *= 0.8;
 
-  if (major === "cs") prob *= 0.85;
-  if (major === "engineering") prob *= 0.9;
-  if (major === "medicine") prob *= 0.8;
-  if (major === "business") prob *= 0.95;
-
-  return Math.max(5, Math.min(95, Math.round(prob)));
-}
-
-function classify(prob) {
-  if (prob >= 70) return "Safety";
-  if (prob >= 40) return "Match";
-  return "Reach";
+  return Math.max(5, Math.min(95, Math.round(base)));
 }
 
 function findUniversities() {
-  const type = document.getElementById("inputType").value;
-  const raw = parseFloat(document.getElementById("score").value);
+  const inputType = document.getElementById("inputType").value;
+  let score = parseFloat(document.getElementById("score").value);
   const major = document.getElementById("major").value;
+  const resultsDiv = document.getElementById("results");
 
-  let gpa = type === "rapor" ? raporToGPA(raw) : raw;
+  if (isNaN(score)) {
+    resultsDiv.innerHTML = "<p>Please enter a valid score.</p>";
+    return;
+  }
 
-  let safety = [], match = [], reach = [];
+  if (inputType === "gpa" && (score < 0 || score > 4)) {
+    resultsDiv.innerHTML = "<p>GPA must be between 0.0 and 4.0</p>";
+    return;
+  }
+
+  if (inputType === "rapor" && (score < 0 || score > 100)) {
+    resultsDiv.innerHTML = "<p>Rapor must be between 0 and 100</p>";
+    return;
+  }
+
+  let gpa = inputType === "rapor" ? raporToGPA(score) : score;
+
+  let reach = [];
+  let match = [];
+  let safety = [];
 
   universities.forEach(uni => {
-    if (major !== "general" && !uni.majors[major]) return;
+    const rank = uni.majors[major];
+    if (!rank) return;
 
-    const prob = acceptanceProbability(gpa, uni, major);
-    const category = classify(prob);
+    const prob = acceptanceProbability(gpa, rank);
 
-    const data = { ...uni, prob };
+    const data = { ...uni, rank, prob };
 
-    if (category === "Safety") safety.push(data);
-    else if (category === "Match") match.push(data);
+    if (prob >= 70) safety.push(data);
+    else if (prob >= 40) match.push(data);
     else reach.push(data);
   });
 
-  const topAI = [...universities]
-    .map(u => ({
-      ...u,
-      prob: acceptanceProbability(gpa, u, major)
-    }))
-    .sort((a, b) => b.prob - a.prob)
-    .slice(0, 5);
+  [safety, match, reach].forEach(arr =>
+    arr.sort((a, b) => a.rank - b.rank)
+  );
 
-  document.getElementById("results").innerHTML = `
-    <p>GPA: <b>${gpa.toFixed(2)}</b> | Major: <b>${major.toUpperCase()}</b></p>
+  function createCards(list) {
+    return list.map(uni => `
+      <div class="card">
+        <img src="${uni.logo}" class="logo">
+        <h3>${uni.name}</h3>
+        <p>#${uni.rank} (${major})</p>
+        <p>${uni.prob}% chance</p>
+        <button onclick="window.open('${uni.website}', '_blank')">
+          Visit Website
+        </button>
+      </div>
+    `).join("");
+  }
 
-    <h2>Recommendations</h2>
-    <div class="grid">
-      ${topAI.map(u => `
-        <div class="card">
-          <h3>${u.name}</h3>
-          <p>#${u.rank}</p>
-          <p>${u.prob}% chance</p>
-        </div>
-      `).join("")}
-    </div>
+  resultsDiv.innerHTML = `
+    <h2>Converted GPA: ${gpa.toFixed(2)}</h2>
 
-    ${renderSection("Safety", safety, "safety")}
-    ${renderSection("Match", match, "match")}
-    ${renderSection("Reach", reach, "reach")}
+    <h3>🟢 Safety</h3>
+    <div class="grid">${createCards(safety.slice(0,10))}</div>
+
+    <h3>✅ Match</h3>
+    <div class="grid">${createCards(match.slice(0,10))}</div>
+
+    <h3>🎯 Reach</h3>
+    <div class="grid">${createCards(reach.slice(0,10))}</div>
   `;
 }
 
-function renderSection(title, list, type) {
-  if (!list.length) return "";
+function toggleCalculator() {
+  const calc = document.getElementById("calculator");
+  calc.classList.toggle("hidden");
+}
 
-  return `
-    <h2>${title}</h2>
-    <div class="grid">
-      ${list.map(u => `
-        <div class="card">
-          <h3>${u.name}</h3>
-          <p>#${u.rank}</p>
-          <p>${u.prob}%</p>
-          <div class="bar"><div class="fill" style="width:${u.prob}%"></div></div>
-          <span class="badge ${type}">${type}</span>
-        </div>
-      `).join("")}
-    </div>
-  `;
+function calculateAverage() {
+  const s1 = +document.getElementById("s1").value || 0;
+  const s2 = +document.getElementById("s2").value || 0;
+  const s3 = +document.getElementById("s3").value || 0;
+  const s4 = +document.getElementById("s4").value || 0;
+
+  const avg = (s1 + s2 + s3 + s4) / 4;
+
+  document.getElementById("avgResult").innerText =
+    "Average: " + avg.toFixed(2);
 }
