@@ -6,6 +6,12 @@ const universities = [
     logo: "https://upload.wikimedia.org/wikipedia/commons/0/0c/MIT_logo.svg",
     majors: { engineering: 1, computer_science: 1, business: 5, economics: 3, medicine: 20, general: 1 }
   },
+   {
+    name: "Imperial college of London",
+    country: "UK",
+    website: "https://www.imperial.ac.uk/",
+    logo: "https://www.topuniversities.com/sites/default/files/profiles/logos/240430033452pm869301QS-Imperial-Logo-white-text-blue-background-200x200.jpg",
+    majo
   {
     name: "Stanford University",
     country: "USA",
