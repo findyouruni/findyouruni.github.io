@@ -3,7 +3,7 @@ const universities = [
     name: "Massachusetts Institute of Technology",
     country: "USA",
     website: "https://www.mit.edu",
-    logo: "https://upload.wikimedia.org/wikipedia/commons/0/0c/MIT_logo.svg",
+    logo: "https://www.topuniversities.com/sites/default/files/profiles/logos/massachusetts-institute-of-technology-mit_410_large.jpg",
     majors: { engineering: 1, computer_science: 1, business: 5, economics: 3, medicine: 20, general: 1 }
   },
    {
