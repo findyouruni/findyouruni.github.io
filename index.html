@@ -1,73 +1,194 @@
-<style>
+<!DOCTYPE html>
+<html lang="en">
 
-body{
-  font-family: Arial;
-  background:#f5f7fb;
-  padding:20px;
-}
+<head>
 
-h1{
-  text-align:center;
-}
+  <meta charset="UTF-8">
 
-.controls{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  margin-bottom:20px;
-}
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
-input, select, button{
-  padding:10px;
-  border-radius:10px;
-  border:1px solid #ccc;
-}
+  <title>Find Your UNI</title>
 
-button{
-  cursor:pointer;
-}
+  <link rel="stylesheet" href="style.css">
 
-.grid{
-  display:grid;
-  grid-template-columns:
-  repeat(auto-fit,minmax(260px,1fr));
-  gap:20px;
-}
+</head>
 
-.card{
-  background:white;
-  padding:20px;
-  border-radius:18px;
-  box-shadow:0 4px 12px rgba(0,0,0,0.08);
-  text-align:center;
-}
+<body>
 
-.logo{
-  width:80px;
-  height:80px;
-  object-fit:contain;
-}
+  <div class="container">
 
-.card button{
-  margin-top:10px;
-  background:#2563eb;
-  color:white;
-  border:none;
-}
+    <h1>🎓 Find Your UNI</h1>
 
-.hidden{
-  display:none;
-}
+    <p class="subtitle">
+      Discover universities from the QS Top 100
+      based on your GPA or Rapor score.
+    </p>
 
-.calculator{
-  margin-bottom:25px;
-  background:white;
-  padding:20px;
-  border-radius:18px;
-}
+    <!-- CONTROLS -->
+    <div class="controls">
 
-.summary{
-  margin-bottom:25px;
-}
+      <!-- INPUT TYPE -->
+      <div class="input-group">
 
-</style>
+        <label>
+          Choose Input Type
+        </label>
+
+        <select id="inputType">
+
+          <option value="gpa">
+            GPA (0–4)
+          </option>
+
+          <option value="rapor">
+            Rapor (0–100)
+          </option>
+
+        </select>
+
+      </div>
+
+      <!-- SCORE -->
+      <div class="input-group">
+
+        <label>
+          Enter Your Score
+        </label>
+
+        <input
+          type="number"
+          id="score"
+          placeholder="Enter GPA or Rapor"
+          step="0.01"
+        >
+
+      </div>
+
+      <!-- MAJOR -->
+      <div class="input-group">
+
+        <label>
+          Select Major
+        </label>
+
+        <select id="major">
+
+          <option value="general">
+            General
+          </option>
+
+          <option value="engineering">
+            Engineering
+          </option>
+
+          <option value="computer_science">
+            Computer Science
+          </option>
+
+          <option value="business">
+            Business
+          </option>
+
+          <option value="economics">
+            Economics
+          </option>
+
+          <option value="medicine">
+            Medicine
+          </option>
+
+        </select>
+
+      </div>
+
+    </div>
+
+    <!-- BUTTONS -->
+    <div class="button-group">
+
+      <button
+        class="primary-btn"
+        onclick="findUniversities()"
+      >
+        🔍 Find Universities
+      </button>
+
+      <button
+        class="secondary-btn"
+        onclick="toggleCalculator()"
+      >
+        📊 Rapor Calculator
+      </button>
+
+    </div>
+
+    <!-- RAPOR CALCULATOR -->
+    <div
+      id="calculator"
+      class="calculator hidden"
+    >
+
+      <h2>
+        📘 Rapor Average Calculator
+      </h2>
+
+      <p>
+        Enter your 4 semester grades to calculate
+        your average score and estimated GPA.
+      </p>
+
+      <div class="semester-grid">
+
+        <input
+          type="number"
+          id="s1"
+          placeholder="Grade 10 Semester 1"
+        >
+
+        <input
+          type="number"
+          id="s2"
+          placeholder="Grade 10 Semester 2"
+        >
+
+        <input
+          type="number"
+          id="s3"
+          placeholder="Grade 11 Semester 1"
+        >
+
+        <input
+          type="number"
+          id="s4"
+          placeholder="Grade 11 Semester 2"
+        >
+
+      </div>
+
+      <button
+        class="primary-btn"
+        onclick="calculateAverage()"
+      >
+        Calculate GPA
+      </button>
+
+      <div id="avgResult"></div>
+
+    </div>
+
+    <!-- RESULTS -->
+    <div id="results"></div>
+
+  </div>
+
+  <!-- SCRIPTS -->
+  <script src="data.js"></script>
+
+  <script src="script.js"></script>
+
+</body>
+
+</html>
