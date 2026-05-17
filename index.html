@@ -4,11 +4,7 @@
 <head>
 
   <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Find Your UNI</title>
 
@@ -21,59 +17,30 @@
   <h1>🎓 Find Your UNI</h1>
 
   <p class="subtitle">
-    Estimate your GPA, calculate your rapor average,
-    and discover universities you may have a chance
-    of getting into based on QS Rankings.
+    Find universities based on your GPA or rapor score.
   </p>
 
-  <!-- CONTROLS -->
   <div class="controls">
 
     <select id="inputType">
-
-      <option value="gpa">
-        GPA (0–4)
-      </option>
-
-      <option value="rapor">
-        Rapor Score (0–100)
-      </option>
-
+      <option value="gpa">GPA (0 - 4)</option>
+      <option value="rapor">Rapor (0 - 100)</option>
     </select>
 
     <input
       type="number"
       id="score"
-      placeholder="Enter GPA or Rapor Score"
+      placeholder="Enter GPA or Rapor"
       step="0.01"
     >
 
     <select id="major">
-
-      <option value="general">
-        General
-      </option>
-
-      <option value="engineering">
-        Engineering
-      </option>
-
-      <option value="computer_science">
-        Computer Science
-      </option>
-
-      <option value="business">
-        Business
-      </option>
-
-      <option value="economics">
-        Economics
-      </option>
-
-      <option value="medicine">
-        Medicine
-      </option>
-
+      <option value="general">General</option>
+      <option value="engineering">Engineering</option>
+      <option value="computer_science">Computer Science</option>
+      <option value="business">Business</option>
+      <option value="economics">Economics</option>
+      <option value="medicine">Medicine</option>
     </select>
 
     <button onclick="findUniversities()">
@@ -89,46 +56,22 @@
   <!-- RAPOR CALCULATOR -->
   <div id="calculator" class="calculator hidden">
 
-    <h2>
-      📘 Rapor Average Calculator
-    </h2>
-
-    <p>
-      Input your 4 semester grades below.
-      The calculator will automatically
-      estimate your GPA.
-    </p>
+    <h2>Rapor Calculator</h2>
 
     <div class="semester-grid">
 
-      <input
-        type="number"
-        id="s1"
-        placeholder="Grade 10 Semester 1"
-      >
+      <input type="number" id="s1" placeholder="Grade 10 Sem 1">
 
-      <input
-        type="number"
-        id="s2"
-        placeholder="Grade 10 Semester 2"
-      >
+      <input type="number" id="s2" placeholder="Grade 10 Sem 2">
 
-      <input
-        type="number"
-        id="s3"
-        placeholder="Grade 11 Semester 1"
-      >
+      <input type="number" id="s3" placeholder="Grade 11 Sem 1">
 
-      <input
-        type="number"
-        id="s4"
-        placeholder="Grade 11 Semester 2"
-      >
+      <input type="number" id="s4" placeholder="Grade 11 Sem 2">
 
     </div>
 
     <button onclick="calculateAverage()">
-      Calculate Average
+      Calculate
     </button>
 
     <div id="avgResult"></div>
@@ -138,19 +81,7 @@
   <!-- RESULTS -->
   <div id="results"></div>
 
-  <!-- FOOTER -->
-  <footer>
-
-    <p>
-      University recommendations and acceptance
-      rates are estimated using GPA, QS rankings,
-      and major competitiveness.
-    </p>
-
-  </footer>
-
   <script src="data.js"></script>
-
   <script src="script.js"></script>
 
 </body>
