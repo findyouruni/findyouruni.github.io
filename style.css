@@ -1,57 +1,51 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: Arial, sans-serif;
-
   background: #f4f7fb;
-  color: #222;
+  font-family: Arial, sans-serif;
 }
 
 .container {
   width: 90%;
   max-width: 1200px;
   margin: auto;
-  padding: 40px 0;
+  padding: 30px 0;
 }
 
 h1 {
   text-align: center;
-  font-size: 42px;
+  color: #222;
   margin-bottom: 10px;
 }
 
 .subtitle {
   text-align: center;
-  margin-bottom: 40px;
-  color: #555;
+  color: #666;
+  margin-bottom: 30px;
 }
 
 .controls {
   display: flex;
   flex-wrap: wrap;
-  gap: 15px;
-
+  gap: 12px;
   justify-content: center;
-
-  margin-bottom: 30px;
+  margin-bottom: 25px;
 }
 
-.controls select,
 .controls input,
+.controls select,
 .controls button {
-  padding: 14px;
+  padding: 12px;
   border-radius: 10px;
   border: 1px solid #ccc;
-
   font-size: 16px;
 }
 
 .controls button {
   background: #2563eb;
   color: white;
-  border: none;
   cursor: pointer;
-  transition: 0.2s;
+  border: none;
 }
 
 .controls button:hover {
@@ -60,14 +54,9 @@ h1 {
 
 .calculator {
   background: white;
-
   padding: 25px;
-
-  border-radius: 18px;
-
-  margin-bottom: 40px;
-
-  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+  border-radius: 15px;
+  margin-bottom: 30px;
 }
 
 .hidden {
@@ -76,11 +65,8 @@ h1 {
 
 .semester-grid {
   display: grid;
-
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 15px;
-
   margin-bottom: 20px;
 }
 
@@ -95,75 +81,57 @@ h1 {
 }
 
 .summary {
-  text-align: center;
-  margin-bottom: 30px;
+  margin-bottom: 25px;
 }
 
 .grid {
   display: grid;
-
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-
-  gap: 25px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
 }
 
 .card {
   background: white;
-
-  border-radius: 20px;
-
-  padding: 25px;
-
+  border-radius: 18px;
+  padding: 20px;
   text-align: center;
-
-  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-
-  transition: 0.2s;
-}
-
-.card:hover {
-  transform: translateY(-5px);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
 }
 
 .logo {
   width: 90px;
   height: 90px;
-
   object-fit: contain;
-
   margin-bottom: 15px;
 }
 
 .card h3 {
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
-.chance {
-  font-size: 18px;
-  font-weight: bold;
-  color: #2563eb;
+.card p {
+  margin: 8px 0;
+  color: #444;
 }
 
 .card button {
-  margin-top: 15px;
-
-  padding: 12px 18px;
-
+  margin-top: 12px;
+  padding: 10px 16px;
   border: none;
-  border-radius: 10px;
-
   background: #111827;
   color: white;
-
+  border-radius: 10px;
   cursor: pointer;
 }
 
 .card button:hover {
-  opacity: 0.9;
+  background: #000;
 }
 
 .error {
+  background: #ffe5e5;
+  color: #b91c1c;
+  padding: 15px;
+  border-radius: 10px;
   text-align: center;
-  color: red;
-  font-weight: bold;
 }
