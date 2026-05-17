@@ -1,7 +1,7 @@
 const universities = [
 
   {
-    name: "MIT",
+    name: "Massachusetts Institute of Technology",
     rank: 1,
     website: "https://www.mit.edu",
     logo: "https://upload.wikimedia.org/wikipedia/commons/0/0c/MIT_logo.svg"
@@ -11,7 +11,7 @@ const universities = [
     name: "Imperial College London",
     rank: 2,
     website: "https://www.imperial.ac.uk",
-    logo: "https://upload.wikimedia.org/wikipedia/commons/2/28/Imperial_College_London_new_logo.svg"
+    logo: "https://upload.wikimedia.org/wikipedia/commons/4/44/Imperial_College_London_new_logo.png"
   },
 
   {
@@ -85,24 +85,94 @@ const universities = [
   },
 
   {
-    name: "University of Melbourne",
-    rank: 13,
-    website: "https://www.unimelb.edu.au",
-    logo: "https://upload.wikimedia.org/wikipedia/en/b/b4/University_of_Melbourne_coat_of_arms.svg"
-  },
-
-  {
     name: "Peking University",
-    rank: 14,
+    rank: 13,
     website: "https://english.pku.edu.cn",
     logo: "https://upload.wikimedia.org/wikipedia/en/1/17/Peking_University_logo.svg"
   },
 
   {
-    name: "Nanyang Technological University",
+    name: "Cornell University",
+    rank: 14,
+    website: "https://www.cornell.edu",
+    logo: "https://upload.wikimedia.org/wikipedia/en/4/47/Cornell_University_seal.svg"
+  },
+
+  {
+    name: "Tsinghua University",
     rank: 15,
-    website: "https://www.ntu.edu.sg",
-    logo: "https://upload.wikimedia.org/wikipedia/en/4/48/Nanyang_Technological_University.svg"
+    website: "https://www.tsinghua.edu.cn",
+    logo: "https://upload.wikimedia.org/wikipedia/en/e/ec/Tsinghua_University_Logo.svg"
+  },
+
+  {
+    name: "Yale University",
+    rank: 16,
+    website: "https://www.yale.edu",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/6/6e/Yale_University_Shield_1.svg"
+  },
+
+  {
+    name: "Princeton University",
+    rank: 17,
+    website: "https://www.princeton.edu",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/d/d0/Princeton_seal.svg"
+  },
+
+  {
+    name: "Columbia University",
+    rank: 18,
+    website: "https://www.columbia.edu",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/f/f1/Columbia_University_shield.svg"
+  },
+
+  {
+    name: "University of Toronto",
+    rank: 19,
+    website: "https://www.utoronto.ca",
+    logo: "https://upload.wikimedia.org/wikipedia/en/0/04/Utoronto_coa.svg"
+  },
+
+  {
+    name: "National University of Singapore",
+    rank: 20,
+    website: "https://www.nus.edu.sg",
+    logo: "https://upload.wikimedia.org/wikipedia/en/9/9a/NUS_coat_of_arms.svg"
+  },
+
+  {
+    name: "Carnegie Mellon University",
+    rank: 21,
+    website: "https://www.cmu.edu",
+    logo: "https://upload.wikimedia.org/wikipedia/en/b/bb/Carnegie_Mellon_University_seal.svg"
+  },
+
+  {
+    name: "University of Melbourne",
+    rank: 22,
+    website: "https://www.unimelb.edu.au",
+    logo: "https://upload.wikimedia.org/wikipedia/en/b/b4/University_of_Melbourne_coat_of_arms.svg"
+  },
+
+  {
+    name: "University of Sydney",
+    rank: 23,
+    website: "https://www.sydney.edu.au",
+    logo: "https://upload.wikimedia.org/wikipedia/en/9/9c/University_of_Sydney_coat_of_arms.svg"
+  },
+
+  {
+    name: "University of New South Wales",
+    rank: 24,
+    website: "https://www.unsw.edu.au",
+    logo: "https://upload.wikimedia.org/wikipedia/en/5/5b/University_of_New_South_Wales_coat_of_arms.svg"
+  },
+
+  {
+    name: "University of Chicago",
+    rank: 25,
+    website: "https://www.uchicago.edu",
+    logo: "https://upload.wikimedia.org/wikipedia/en/7/79/University_of_Chicago_shield.svg"
   }
 
 ];
