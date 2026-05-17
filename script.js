@@ -1,22 +1,21 @@
-console.log("script loaded");
-
 function raporToGPA(score) {
   return (score / 100) * 4;
 }
 
 function getRankRange(gpa) {
 
-  if (gpa >= 3.9) return [1, 20];
-  if (gpa >= 3.7) return [21, 40];
-  if (gpa >= 3.5) return [41, 60];
-  if (gpa >= 3.2) return [61, 80];
+  if (gpa >= 3.9) return [1, 10];
+  if (gpa >= 3.7) return [11, 20];
+  if (gpa >= 3.5) return [21, 30];
+  if (gpa >= 3.3) return [31, 50];
+  if (gpa >= 3.0) return [51, 80];
 
   return [81, 100];
 }
 
-function acceptanceProbability(gpa, rank) {
+function acceptanceChance(gpa, rank) {
 
-  let chance = 100 - rank;
+  let chance = 95 - rank;
 
   chance += (gpa - 3.0) * 20;
 
@@ -33,49 +32,43 @@ function acceptanceProbability(gpa, rank) {
 
 function toggleCalculator() {
 
-  console.log("toggle calculator clicked");
+  const calc = document.getElementById("calculator");
 
-  const calculator = document.getElementById("calculator");
-
-  calculator.classList.toggle("hidden");
+  calc.classList.toggle("hidden");
 }
 
 function calculateAverage() {
-
-  console.log("calculate average clicked");
 
   const s1 = Number(document.getElementById("s1").value) || 0;
   const s2 = Number(document.getElementById("s2").value) || 0;
   const s3 = Number(document.getElementById("s3").value) || 0;
   const s4 = Number(document.getElementById("s4").value) || 0;
 
-  const avg = (s1 + s2 + s3 + s4) / 4;
+  const average = (s1 + s2 + s3 + s4) / 4;
 
-  const gpa = raporToGPA(avg);
+  const gpa = raporToGPA(average);
 
   document.getElementById("avgResult").innerHTML = `
-    Average Score: <strong>${avg.toFixed(2)}</strong><br>
-    GPA Equivalent: <strong>${gpa.toFixed(2)}</strong>
+    <h3>Average Score: ${average.toFixed(2)}</h3>
+    <h3>Converted GPA: ${gpa.toFixed(2)}</h3>
   `;
 }
 
 function findUniversities() {
 
-  console.log("find universities clicked");
+  const inputType =
+    document.getElementById("inputType").value;
 
-  const inputType = document.getElementById("inputType").value;
+  const score =
+    parseFloat(document.getElementById("score").value);
 
-  const scoreInput = document.getElementById("score").value;
-
-  const score = parseFloat(scoreInput);
-
-  const results = document.getElementById("results");
+  const results =
+    document.getElementById("results");
 
   if (isNaN(score)) {
 
-    results.innerHTML = `
-      <p>Please enter a valid score.</p>
-    `;
+    results.innerHTML =
+      "<h2>Please enter a valid score.</h2>";
 
     return;
   }
@@ -91,40 +84,41 @@ function findUniversities() {
     gpa = raporToGPA(score);
   }
 
-  const rankRange = getRankRange(gpa);
+  const range = getRankRange(gpa);
 
-  const minRank = rankRange[0];
-  const maxRank = rankRange[1];
+  const minRank = range[0];
+  const maxRank = range[1];
 
-  let filtered = universities.filter(function(uni) {
+  let recommended = universities.filter(function(uni) {
 
-    return uni.generalRank >= minRank &&
-           uni.generalRank <= maxRank;
+    return uni.rank >= minRank &&
+           uni.rank <= maxRank;
   });
 
-  if (filtered.length === 0) {
+  if (recommended.length === 0) {
 
-    filtered = universities;
+    recommended = universities.slice(
+      universities.length - 10
+    );
   }
 
-  filtered = filtered.slice(0, 10);
+  recommended = recommended.slice(0, 10);
 
   let html = `
 
     <div class="resultTitle">
       <h2>Your GPA: ${gpa.toFixed(2)}</h2>
-      <p>Recommended QS Rank Range: ${minRank} - ${maxRank}</p>
+      <p>Recommended QS Rank Range:
+      ${minRank} - ${maxRank}</p>
     </div>
 
     <div class="grid">
   `;
 
-  filtered.forEach(function(uni) {
+  recommended.forEach(function(uni) {
 
-    const chance = acceptanceProbability(
-      gpa,
-      uni.generalRank
-    );
+    const chance =
+      acceptanceChance(gpa, uni.rank);
 
     html += `
 
@@ -134,12 +128,13 @@ function findUniversities() {
           src="${uni.logo}"
           class="logo"
           alt="${uni.name}"
+          onerror="this.src='https://via.placeholder.com/80'"
         >
 
         <h3>${uni.name}</h3>
 
         <p class="rank">
-          QS Rank #${uni.generalRank}
+          QS Rank #${uni.rank}
         </p>
 
         <p class="acceptance">
@@ -160,8 +155,6 @@ function findUniversities() {
 }
 
 document.addEventListener("DOMContentLoaded", function() {
-
-  console.log("DOM fully loaded");
 
   document
     .getElementById("findBtn")
