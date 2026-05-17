@@ -2,84 +2,71 @@
 <html lang="en">
 
 <head>
-
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <title>Find Your UNI</title>
 
-  <link rel="stylesheet" href="style.css">
-
+  <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
 
-  <h1>🎓 Find Your UNI</h1>
+  <div class="container">
 
-  <p class="subtitle">
-    Find universities based on your GPA or rapor score.
-  </p>
+    <h1>🎓 Find Your UNI</h1>
 
-  <div class="controls">
+    <p class="subtitle">
+      Discover universities from the QS Top 100 based on your GPA or rapor score.
+    </p>
 
-    <select id="inputType">
-      <option value="gpa">GPA (0 - 4)</option>
-      <option value="rapor">Rapor (0 - 100)</option>
-    </select>
+    <div class="controls">
 
-    <input
-      type="number"
-      id="score"
-      placeholder="Enter GPA or Rapor"
-      step="0.01"
-    >
+      <select id="inputType">
+        <option value="gpa">GPA (0 - 4)</option>
+        <option value="rapor">Rapor Score (0 - 100)</option>
+      </select>
 
-    <select id="major">
-      <option value="general">General</option>
-      <option value="engineering">Engineering</option>
-      <option value="computer_science">Computer Science</option>
-      <option value="business">Business</option>
-      <option value="economics">Economics</option>
-      <option value="medicine">Medicine</option>
-    </select>
+      <input
+        type="number"
+        id="score"
+        placeholder="Enter your GPA or Rapor Score"
+      />
 
-    <button onclick="findUniversities()">
-      🔍 Find Universities
-    </button>
+      <button onclick="findUniversities()">
+        Find Universities
+      </button>
 
-    <button onclick="toggleCalculator()">
-      📊 Rapor Calculator
-    </button>
-
-  </div>
-
-  <!-- RAPOR CALCULATOR -->
-  <div id="calculator" class="calculator hidden">
-
-    <h2>Rapor Calculator</h2>
-
-    <div class="semester-grid">
-
-      <input type="number" id="s1" placeholder="Grade 10 Sem 1">
-
-      <input type="number" id="s2" placeholder="Grade 10 Sem 2">
-
-      <input type="number" id="s3" placeholder="Grade 11 Sem 1">
-
-      <input type="number" id="s4" placeholder="Grade 11 Sem 2">
+      <button onclick="toggleCalculator()">
+        📊 Rapor Calculator
+      </button>
 
     </div>
 
-    <button onclick="calculateAverage()">
-      Calculate
-    </button>
+    <div id="calculator" class="calculator hidden">
 
-    <div id="avgResult"></div>
+      <h2>Rapor Average Calculator</h2>
+
+      <div class="semester-grid">
+
+        <input type="number" id="s1" placeholder="Grade 10 Semester 1">
+        <input type="number" id="s2" placeholder="Grade 10 Semester 2">
+        <input type="number" id="s3" placeholder="Grade 11 Semester 1">
+        <input type="number" id="s4" placeholder="Grade 11 Semester 2">
+
+      </div>
+
+      <button onclick="calculateAverage()">
+        Calculate Average
+      </button>
+
+      <div id="avgResult"></div>
+
+    </div>
+
+    <div id="results"></div>
 
   </div>
-
-  <!-- RESULTS -->
-  <div id="results"></div>
 
   <script src="data.js"></script>
   <script src="script.js"></script>
