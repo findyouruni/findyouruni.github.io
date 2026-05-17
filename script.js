@@ -1,168 +1,169 @@
+// REPLACE YOUR ENTIRE script.js WITH THIS
+
 function raporToGPA(score) {
   return (score / 100) * 4;
 }
 
+// GPA → Recommended QS Rank Range
 function getRankRange(gpa) {
 
-  if (gpa >= 3.9) return [1, 10];
-  if (gpa >= 3.7) return [11, 20];
-  if (gpa >= 3.5) return [21, 35];
-  if (gpa >= 3.3) return [36, 50];
-  if (gpa >= 3.1) return [51, 70];
-  if (gpa >= 3.0) return [71, 85];
+  if (gpa >= 3.9) return [1, 15];
+  if (gpa >= 3.7) return [10, 25];
+  if (gpa >= 3.5) return [20, 40];
+  if (gpa >= 3.3) return [35, 55];
+  if (gpa >= 3.1) return [50, 70];
+  if (gpa >= 2.8) return [65, 85];
+  if (gpa >= 2.5) return [75, 95];
+  if (gpa >= 2.0) return [85, 100];
 
-  return [86, 100];
+  return [89, 100];
 }
 
-function acceptanceChance(gpa, rank) {
+// Acceptance Formula
+function acceptanceProbability(gpa, rank) {
 
-  let chance = 92 - rank;
-
-  chance += (gpa - 3.0) * 18;
-
-  if (chance > 90) {
-    chance = 90;
+  // Any GPA below 2.0 = 1%
+  if (gpa < 2.0) {
+    return 1;
   }
 
-  if (chance < 1) {
-    chance = 1;
-  }
+  // Better ranked university = LOWER chance
+  // Worse ranked university = HIGHER chance
 
-  return Math.round(chance);
-}
+  let chance =
+    (rank * 0.22) +       // lower ranks increase chance
+    ((gpa - 2.0) * 4);    // GPA bonus
 
-function toggleCalculator() {
+  // Clamp between 1% and 25%
+  chance = Math.max(1, Math.min(25, Math.round(chance)));
 
-  const calculator =
-    document.getElementById("calculator");
-
-  calculator.classList.toggle("hidden");
-}
-
-function calculateAverage() {
-
-  const s1 =
-    Number(document.getElementById("s1").value);
-
-  const s2 =
-    Number(document.getElementById("s2").value);
-
-  const s3 =
-    Number(document.getElementById("s3").value);
-
-  const s4 =
-    Number(document.getElementById("s4").value);
-
-  if (
-    s1 > 100 || s2 > 100 ||
-    s3 > 100 || s4 > 100 ||
-    s1 < 0 || s2 < 0 ||
-    s3 < 0 || s4 < 0
-  ) {
-
-    document.getElementById("avgResult").innerHTML =
-      "<h3>Please enter semester scores between 0 and 100.</h3>";
-
-    return;
-  }
-
-  const average = (s1 + s2 + s3 + s4) / 4;
-
-  const gpa = raporToGPA(average);
-
-  document.getElementById("avgResult").innerHTML = `
-    <h3>Average Score: ${average.toFixed(2)}</h3>
-    <h3>Converted GPA: ${gpa.toFixed(2)}</h3>
-  `;
+  return chance;
 }
 
 function findUniversities() {
 
-  const inputType =
-    document.getElementById("inputType").value;
+  const inputType = document.getElementById("inputType").value;
+  const score = parseFloat(document.getElementById("score").value);
 
-  const score =
-    parseFloat(document.getElementById("score").value);
+  const resultsDiv = document.getElementById("results");
 
-  const results =
-    document.getElementById("results");
-
+  // Empty input
   if (isNaN(score)) {
 
-    results.innerHTML =
-      "<h2>Please enter a valid score.</h2>";
+    resultsDiv.innerHTML = `
+      <div class="error">
+        Please enter a valid score.
+      </div>
+    `;
 
     return;
   }
 
+  // GPA validation
   if (inputType === "gpa") {
 
     if (score < 0 || score > 4) {
 
-      results.innerHTML = `
-        <h2>
-          GPA must be between 0.0 and 4.0
-        </h2>
+      resultsDiv.innerHTML = `
+        <div class="error">
+          GPA must be between 0 and 4. Please try again.
+        </div>
       `;
 
       return;
     }
   }
 
+  // Rapor validation
   if (inputType === "rapor") {
 
     if (score < 0 || score > 100) {
 
-      results.innerHTML = `
-        <h2>
-          Rapor score must be between 0 and 100
-        </h2>
+      resultsDiv.innerHTML = `
+        <div class="error">
+          Rapor score must be between 0 and 100. Please try again.
+        </div>
       `;
 
       return;
     }
   }
 
-  let gpa;
+  // Convert to GPA
+  const gpa =
+    inputType === "rapor"
+      ? raporToGPA(score)
+      : score;
 
-  if (inputType === "gpa") {
+  // Get rank range
+  const [minRank, maxRank] = getRankRange(gpa);
 
-    gpa = score;
+  // FILTER universities INSIDE rank range only
+  let recommended = universities.filter(uni => {
 
-  } else {
-
-    gpa = raporToGPA(score);
-  }
-
-  const range = getRankRange(gpa);
-
-  const minRank = range[0];
-  const maxRank = range[1];
-
-  let recommended = universities.filter(function(uni) {
-
-    return (
-      uni.rank >= minRank &&
-      uni.rank <= maxRank
-    );
+    return uni.rank >= minRank &&
+           uni.rank <= maxRank;
   });
 
-  recommended.sort(function(a, b) {
-    return a.rank - b.rank;
-  });
+  // Sort properly by rank
+  recommended.sort((a, b) => a.rank - b.rank);
 
-  if (recommended.length === 0) {
-
-    recommended = universities.filter(function(uni) {
-      return uni.rank >= 86;
-    });
-  }
-
+  // Only 10 universities
   recommended = recommended.slice(0, 10);
 
-  let html = `
+  // Create cards
+  let cards = "";
 
-    <div class="resultTitle">
+  recommended.forEach(uni => {
+
+    const acceptance = acceptanceProbability(gpa, uni.rank);
+
+    cards += `
+      <div class="card">
+
+        <img
+          src="${uni.logo}"
+          alt="${uni.name}"
+          class="logo"
+          onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg'"
+        >
+
+        <h2>${uni.name}</h2>
+
+        <p>
+          <strong>QS Rank:</strong>
+          #${uni.rank}
+        </p>
+
+        <p>
+          <strong>Acceptance Chance:</strong>
+          ${acceptance}%
+        </p>
+
+        <button onclick="window.open('${uni.website}', '_blank')">
+          Visit Website
+        </button>
+
+      </div>
+    `;
+  });
+
+  // No results
+  if (recommended.length === 0) {
+
+    resultsDiv.innerHTML = `
+      <div class="error">
+        No universities found for this GPA range.
+      </div>
+    `;
+
+    return;
+  }
+
+  // Final HTML
+  resultsDiv.innerHTML = `
+
+    <div class="summary">
 
       <h2>Your GPA: ${gpa.toFixed(2)}</h2>
 
@@ -174,58 +175,34 @@ function findUniversities() {
     </div>
 
     <div class="grid">
+      ${cards}
+    </div>
   `;
-
-  recommended.forEach(function(uni) {
-
-    const chance =
-      acceptanceChance(gpa, uni.rank);
-
-    html += `
-
-      <div class="card">
-
-        <img
-          src="${uni.logo}"
-          class="logo"
-          alt="${uni.name}"
-          onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg'"
-        >
-
-        <h3>${uni.name}</h3>
-
-        <p class="rank">
-          QS Rank #${uni.rank}
-        </p>
-
-        <p class="acceptance">
-          ${chance}% Acceptance Chance
-        </p>
-
-        <button onclick="window.open('${uni.website}', '_blank')">
-          Visit Website
-        </button>
-
-      </div>
-    `;
-  });
-
-  html += "</div>";
-
-  results.innerHTML = html;
 }
 
-document.addEventListener("DOMContentLoaded", function() {
+// Toggle calculator
+function toggleCalculator() {
 
-  document
-    .getElementById("findBtn")
-    .addEventListener("click", findUniversities);
+  const calc = document.getElementById("calculator");
 
-  document
-    .getElementById("calcBtn")
-    .addEventListener("click", toggleCalculator);
+  calc.classList.toggle("hidden");
+}
 
-  document
-    .getElementById("avgBtn")
-    .addEventListener("click", calculateAverage);
-});
+// Calculate rapor average
+function calculateAverage() {
+
+  const s1 = parseFloat(document.getElementById("s1").value) || 0;
+  const s2 = parseFloat(document.getElementById("s2").value) || 0;
+  const s3 = parseFloat(document.getElementById("s3").value) || 0;
+  const s4 = parseFloat(document.getElementById("s4").value) || 0;
+
+  const avg = (s1 + s2 + s3 + s4) / 4;
+
+  const gpa = raporToGPA(avg);
+
+  document.getElementById("avgResult").innerHTML = `
+    Average Rapor Score: ${avg.toFixed(2)}
+    <br>
+    Estimated GPA: ${gpa.toFixed(2)}
+  `;
+}
