@@ -1,68 +1,108 @@
+<!-- index.html -->
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
   <title>Find Your UNI</title>
 
-  <link rel="stylesheet" href="style.css">
+  <link
+    rel="stylesheet"
+    href="style.css"
+  >
+
 </head>
 
 <body>
 
-  <div class="container">
+  <h1>🎓 Find Your UNI</h1>
 
-    <h1>🎓 Find Your UNI</h1>
-    <p class="subtitle">
-      Discover universities based on your GPA or rapor score
-    </p>
+  <div class="controls">
 
-    <div class="controls">
+    <select id="inputType">
+      <option value="gpa">
+        GPA (0–4)
+      </option>
 
-      <select id="inputType">
-        <option value="gpa">GPA (0 - 4)</option>
-        <option value="rapor">Rapor Score (0 - 100)</option>
-      </select>
+      <option value="rapor">
+        Rapor (0–100)
+      </option>
+    </select>
 
-      <input
-        type="number"
-        id="score"
-        placeholder="Enter your GPA or rapor score"
-      />
+    <input
+      type="number"
+      id="score"
+      placeholder="Enter GPA or Rapor"
+    >
 
-      <button id="findBtn">
-        Find Universities
-      </button>
+    <button id="findBtn">
+      Find Universities
+    </button>
 
-      <button id="calcBtn">
-        📊 Rapor Calculator
-      </button>
-
-    </div>
-
-    <div id="calculator" class="calculator hidden">
-
-      <h2>Rapor Average Calculator</h2>
-
-      <input type="number" id="s1" placeholder="Semester 1">
-      <input type="number" id="s2" placeholder="Semester 2">
-      <input type="number" id="s3" placeholder="Semester 3">
-      <input type="number" id="s4" placeholder="Semester 4">
-
-      <button id="avgBtn">
-        Calculate Average
-      </button>
-
-      <div id="avgResult"></div>
-
-    </div>
-
-    <div id="results"></div>
+    <button id="calcBtn">
+      📊 Rapor Calculator
+    </button>
 
   </div>
+
+  <!-- CALCULATOR -->
+
+  <div
+    id="calculator"
+    class="calculator hidden"
+  >
+
+    <h2>Rapor Calculator</h2>
+
+    <input
+      type="number"
+      id="s1"
+      placeholder="Semester 1"
+    >
+
+    <input
+      type="number"
+      id="s2"
+      placeholder="Semester 2"
+    >
+
+    <input
+      type="number"
+      id="s3"
+      placeholder="Semester 3"
+    >
+
+    <input
+      type="number"
+      id="s4"
+      placeholder="Semester 4"
+    >
+
+    <button id="avgBtn">
+      Calculate
+    </button>
+
+    <p id="avgResult"></p>
+
+  </div>
+
+  <!-- RESULTS -->
+
+  <div id="results"></div>
+
+  <!-- IMPORTANT ORDER -->
 
   <script src="data.js"></script>
   <script src="script.js"></script>
 
 </body>
+
 </html>
