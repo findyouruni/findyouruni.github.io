@@ -1,4 +1,3 @@
-```javascript
 function raporToGPA(score) {
   return (score / 100) * 4;
 }
@@ -251,4 +250,3 @@ function calculateAverage() {
 
   `;
 }
-```
