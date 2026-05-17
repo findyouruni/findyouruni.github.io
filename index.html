@@ -1,49 +1,73 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Find Your UNI</title>
-  <link rel="stylesheet" href="style.css">
-</head>
+<style>
 
-<body>
+body{
+  font-family: Arial;
+  background:#f5f7fb;
+  padding:20px;
+}
 
-<h1>🎓 Find Your UNI</h1>
+h1{
+  text-align:center;
+}
 
-<div class="controls">
-  <select id="inputType">
-    <option value="gpa">GPA (0–4)</option>
-    <option value="rapor">Rapor (0–100)</option>
-  </select>
+.controls{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-bottom:20px;
+}
 
-  <input type="number" id="score" placeholder="Enter score">
+input, select, button{
+  padding:10px;
+  border-radius:10px;
+  border:1px solid #ccc;
+}
 
-  <select id="major">
-    <option value="general">General</option>
-    <option value="engineering">Engineering</option>
-    <option value="computer_science">Computer Science</option>
-    <option value="business">Business</option>
-    <option value="economics">Economics</option>
-    <option value="medicine">Medicine</option>
-  </select>
+button{
+  cursor:pointer;
+}
 
-  <button onclick="findUniversities()">Find Universities</button>
-  <button onclick="toggleCalculator()">📊 Rapor Calculator</button>
-</div>
+.grid{
+  display:grid;
+  grid-template-columns:
+  repeat(auto-fit,minmax(260px,1fr));
+  gap:20px;
+}
 
-<div id="calculator" class="calculator hidden">
-  <h3>Rapor Average Calculator</h3>
-  <input type="number" id="s1" placeholder="Grade 10 Sem 1">
-  <input type="number" id="s2" placeholder="Grade 10 Sem 2">
-  <input type="number" id="s3" placeholder="Grade 11 Sem 1">
-  <input type="number" id="s4" placeholder="Grade 11 Sem 2">
-  <button onclick="calculateAverage()">Calculate</button>
-  <p id="avgResult"></p>
-</div>
+.card{
+  background:white;
+  padding:20px;
+  border-radius:18px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.08);
+  text-align:center;
+}
 
-<div id="results"></div>
+.logo{
+  width:80px;
+  height:80px;
+  object-fit:contain;
+}
 
-<script src="data.js"></script>
-<script src="script.js"></script>
+.card button{
+  margin-top:10px;
+  background:#2563eb;
+  color:white;
+  border:none;
+}
 
-</body>
-</html>
+.hidden{
+  display:none;
+}
+
+.calculator{
+  margin-bottom:25px;
+  background:white;
+  padding:20px;
+  border-radius:18px;
+}
+
+.summary{
+  margin-bottom:25px;
+}
+
+</style>
