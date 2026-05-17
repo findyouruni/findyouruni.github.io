@@ -6,18 +6,19 @@ function getRankRange(gpa) {
 
   if (gpa >= 3.9) return [1, 10];
   if (gpa >= 3.7) return [11, 20];
-  if (gpa >= 3.5) return [21, 30];
-  if (gpa >= 3.3) return [31, 50];
-  if (gpa >= 3.0) return [51, 80];
+  if (gpa >= 3.5) return [21, 35];
+  if (gpa >= 3.3) return [36, 50];
+  if (gpa >= 3.1) return [51, 70];
+  if (gpa >= 3.0) return [71, 85];
 
-  return [81, 100];
+  return [86, 100];
 }
 
 function acceptanceChance(gpa, rank) {
 
-  let chance = 95 - rank;
+  let chance = 92 - rank;
 
-  chance += (gpa - 3.0) * 20;
+  chance += (gpa - 3.0) * 18;
 
   if (chance > 90) {
     chance = 90;
@@ -32,17 +33,38 @@ function acceptanceChance(gpa, rank) {
 
 function toggleCalculator() {
 
-  const calc = document.getElementById("calculator");
+  const calculator =
+    document.getElementById("calculator");
 
-  calc.classList.toggle("hidden");
+  calculator.classList.toggle("hidden");
 }
 
 function calculateAverage() {
 
-  const s1 = Number(document.getElementById("s1").value) || 0;
-  const s2 = Number(document.getElementById("s2").value) || 0;
-  const s3 = Number(document.getElementById("s3").value) || 0;
-  const s4 = Number(document.getElementById("s4").value) || 0;
+  const s1 =
+    Number(document.getElementById("s1").value);
+
+  const s2 =
+    Number(document.getElementById("s2").value);
+
+  const s3 =
+    Number(document.getElementById("s3").value);
+
+  const s4 =
+    Number(document.getElementById("s4").value);
+
+  if (
+    s1 > 100 || s2 > 100 ||
+    s3 > 100 || s4 > 100 ||
+    s1 < 0 || s2 < 0 ||
+    s3 < 0 || s4 < 0
+  ) {
+
+    document.getElementById("avgResult").innerHTML =
+      "<h3>Please enter semester scores between 0 and 100.</h3>";
+
+    return;
+  }
 
   const average = (s1 + s2 + s3 + s4) / 4;
 
@@ -73,6 +95,34 @@ function findUniversities() {
     return;
   }
 
+  if (inputType === "gpa") {
+
+    if (score < 0 || score > 4) {
+
+      results.innerHTML = `
+        <h2>
+          GPA must be between 0.0 and 4.0
+        </h2>
+      `;
+
+      return;
+    }
+  }
+
+  if (inputType === "rapor") {
+
+    if (score < 0 || score > 100) {
+
+      results.innerHTML = `
+        <h2>
+          Rapor score must be between 0 and 100
+        </h2>
+      `;
+
+      return;
+    }
+  }
+
   let gpa;
 
   if (inputType === "gpa") {
@@ -91,15 +141,21 @@ function findUniversities() {
 
   let recommended = universities.filter(function(uni) {
 
-    return uni.rank >= minRank &&
-           uni.rank <= maxRank;
+    return (
+      uni.rank >= minRank &&
+      uni.rank <= maxRank
+    );
+  });
+
+  recommended.sort(function(a, b) {
+    return a.rank - b.rank;
   });
 
   if (recommended.length === 0) {
 
-    recommended = universities.slice(
-      universities.length - 10
-    );
+    recommended = universities.filter(function(uni) {
+      return uni.rank >= 86;
+    });
   }
 
   recommended = recommended.slice(0, 10);
@@ -107,9 +163,14 @@ function findUniversities() {
   let html = `
 
     <div class="resultTitle">
+
       <h2>Your GPA: ${gpa.toFixed(2)}</h2>
-      <p>Recommended QS Rank Range:
-      ${minRank} - ${maxRank}</p>
+
+      <p>
+        Recommended QS Rank Range:
+        ${minRank} - ${maxRank}
+      </p>
+
     </div>
 
     <div class="grid">
@@ -128,7 +189,7 @@ function findUniversities() {
           src="${uni.logo}"
           class="logo"
           alt="${uni.name}"
-          onerror="this.src='https://via.placeholder.com/80'"
+          onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg'"
         >
 
         <h3>${uni.name}</h3>
