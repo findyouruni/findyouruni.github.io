@@ -2,22 +2,55 @@ function raporToGPA(score) {
   return (score / 100) * 4;
 }
 
+// GPA → rank range
+function getRankRange(gpa) {
+  if (gpa >= 4.0) return [1, 10];
+  if (gpa >= 3.9) return [11, 20];
+  if (gpa >= 3.8) return [21, 30];
+  if (gpa >= 3.7) return [31, 40];
+  if (gpa >= 3.6) return [41, 50];
+  if (gpa >= 3.5) return [51, 60];
+  if (gpa >= 3.4) return [61, 70];
+  if (gpa >= 3.3) return [71, 80];
+  if (gpa >= 3.2) return [81, 90];
+  if (gpa >= 3.1) return [91, 99];
+
+  return [89, 99];
+}
+
+// Acceptance formula
 function acceptanceProbability(gpa, rank) {
-  let base = 50 + (gpa - 3.5) * 40;
 
-  if (rank <= 10) base *= 0.4;
-  else if (rank <= 30) base *= 0.6;
-  else base *= 0.8;
+  // GPA below 3.0
+  if (gpa < 3.0) {
+    return 1;
+  }
 
-  return Math.max(5, Math.min(95, Math.round(base)));
+  // Top 10 custom rates
+  if (rank >= 1 && rank <= 10 && gpa >= 4.0) {
+    return Math.min(90, 3 + (rank * 2));
+  }
+
+  // General formula
+  let chance = 95 - rank;
+
+  // GPA bonus
+  chance += (gpa - 3.0) * 20;
+
+  // Clamp
+  chance = Math.max(1, Math.min(89, Math.round(chance)));
+
+  return chance;
 }
 
 function findUniversities() {
+
   const inputType = document.getElementById("inputType").value;
   let score = parseFloat(document.getElementById("score").value);
   const major = document.getElementById("major").value;
   const resultsDiv = document.getElementById("results");
 
+  // Validation
   if (isNaN(score)) {
     resultsDiv.innerHTML = "<p>Please enter a valid score.</p>";
     return;
@@ -33,63 +66,97 @@ function findUniversities() {
     return;
   }
 
-  let gpa = inputType === "rapor" ? raporToGPA(score) : score;
+  // Convert rapor → GPA
+  let gpa = inputType === "rapor"
+    ? raporToGPA(score)
+    : score;
 
-  let reach = [];
-  let match = [];
-  let safety = [];
+  // Get allowed rank range
+  const [minRank, maxRank] = getRankRange(gpa);
 
-  universities.forEach(uni => {
-    const rank = uni.majors[major];
-    if (!rank) return;
+  // Filter universities
+  let recommended = universities.filter(uni => {
 
-    const prob = acceptanceProbability(gpa, rank);
+    const rank = uni.rankpermajor[major];
 
-    const data = { ...uni, rank, prob };
+    if (!rank || rank === 999) return false;
 
-    if (prob >= 70) safety.push(data);
-    else if (prob >= 40) match.push(data);
-    else reach.push(data);
+    return rank >= minRank && rank <= maxRank;
   });
 
-  [safety, match, reach].forEach(arr =>
-    arr.sort((a, b) => a.rank - b.rank)
+  // Sort by rank
+  recommended.sort((a, b) =>
+    a.rankpermajor[major] - b.rankpermajor[major]
   );
 
+  // Only 10 universities
+  recommended = recommended.slice(0, 10);
+
+  // Generate cards
   function createCards(list) {
-    return list.map(uni => `
-      <div class="card">
-        <img src="${uni.logo}" class="logo">
-        <h3>${uni.name}</h3>
-        <p>#${uni.rank} (${major})</p>
-        <p>${uni.prob}% chance</p>
-        <button onclick="window.open('${uni.website}', '_blank')">
-          Visit Website
-        </button>
-      </div>
-    `).join("");
+
+    if (list.length === 0) {
+      return "<p>No universities found in this GPA range.</p>";
+    }
+
+    return list.map(uni => {
+
+      const rank = uni.rankpermajor[major];
+
+      const prob = acceptanceProbability(gpa, rank);
+
+      return `
+        <div class="card">
+
+          <img src="${uni.logo}" class="logo">
+
+          <h3>${uni.name}</h3>
+
+          <p><strong>Country:</strong> ${uni.country}</p>
+
+          <p>
+            <strong>${major.replace("_", " ")} Rank:</strong>
+            #${rank}
+          </p>
+
+          <p>
+            <strong>Acceptance Rate:</strong>
+            ${prob}%
+          </p>
+
+          <button onclick="window.open('${uni.website}', '_blank')">
+            Visit Website
+          </button>
+
+        </div>
+      `;
+    }).join("");
   }
 
   resultsDiv.innerHTML = `
-    <h2>Converted GPA: ${gpa.toFixed(2)}</h2>
 
-    <h3>🟢 Safety</h3>
-    <div class="grid">${createCards(safety.slice(0,10))}</div>
+    <h2>Your GPA: ${gpa.toFixed(2)}</h2>
 
-    <h3>✅ Match</h3>
-    <div class="grid">${createCards(match.slice(0,10))}</div>
+    <h3>
+      Recommended Universities
+      (Rank ${minRank}-${maxRank})
+    </h3>
 
-    <h3>🎯 Reach</h3>
-    <div class="grid">${createCards(reach.slice(0,10))}</div>
+    <div class="grid">
+      ${createCards(recommended)}
+    </div>
+
   `;
 }
 
+// KEEPING RAPOR CALCULATOR
 function toggleCalculator() {
   const calc = document.getElementById("calculator");
   calc.classList.toggle("hidden");
 }
 
 function calculateAverage() {
+
   const s1 = +document.getElementById("s1").value || 0;
   const s2 = +document.getElementById("s2").value || 0;
   const s3 = +document.getElementById("s3").value || 0;
