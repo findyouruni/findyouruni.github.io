@@ -2,7 +2,7 @@ function raporToGPA(score) {
   return (score / 100) * 4;
 }
 
-// GPA → rank range
+
 function getRankRange(gpa) {
 
   if (gpa >= 3.95) return [1, 15];
@@ -15,20 +15,20 @@ function getRankRange(gpa) {
   if (gpa >= 3.20) return [70, 90];
   if (gpa >= 3.00) return [80, 99];
 
-  // Below 3.0
+ 
   return [89, 99];
 }
 
-// Acceptance rate calculator
+
 function acceptanceProbability(gpa, rank) {
 
-  // Base chance depending on university rank
+ 
   let chance = 100 - rank;
 
-  // GPA bonus
+ 
   chance += (gpa - 3.0) * 22;
 
-  // Extra difficulty for top universities
+ 
   if (rank <= 10) {
     chance *= 0.45;
   }
@@ -39,7 +39,7 @@ function acceptanceProbability(gpa, rank) {
     chance *= 0.75;
   }
 
-  // Lower GPA penalties
+  
   if (gpa < 3.0) {
     chance *= 0.35;
   }
@@ -48,7 +48,7 @@ function acceptanceProbability(gpa, rank) {
     chance *= 0.50;
   }
 
-  // Clamp values
+
   chance = Math.max(1, Math.min(90, Math.round(chance)));
 
   return chance;
@@ -63,7 +63,7 @@ function findUniversities() {
 
   const resultsDiv = document.getElementById("results");
 
-  // Validation
+  
   if (isNaN(score)) {
     resultsDiv.innerHTML =
       "<p>Please enter a valid score.</p>";
@@ -82,34 +82,33 @@ function findUniversities() {
     return;
   }
 
-  // Convert rapor → GPA
+  
   const gpa =
     inputType === "rapor"
       ? raporToGPA(score)
       : score;
 
-  // Rank range
+  
   const [minRank, maxRank] = getRankRange(gpa);
 
-  // Filter universities
+
   let recommended = universities.filter((uni) => {
 
     const rank = uni.rankpermajor[major];
 
-    // Ignore unavailable majors
+
     if (!rank || rank === 999) return false;
 
     return rank >= minRank && rank <= maxRank;
   });
 
-  // Sort by ranking
+ 
   recommended.sort((a, b) => {
     return a.rankpermajor[major]
       - b.rankpermajor[major];
   });
 
-  // If too few universities found,
-  // widen the range slightly
+
   if (recommended.length < 10) {
 
     const extra = universities.filter((uni) => {
@@ -128,10 +127,10 @@ function findUniversities() {
     );
   }
 
-  // Only show 10
+ 
   recommended = recommended.slice(0, 10);
 
-  // Create cards
+
   const cards = recommended.map((uni) => {
 
     const rank = uni.rankpermajor[major];
@@ -199,7 +198,7 @@ function findUniversities() {
   `;
 }
 
-// Toggle calculator
+
 function toggleCalculator() {
 
   const calc =
@@ -208,7 +207,7 @@ function toggleCalculator() {
   calc.classList.toggle("hidden");
 }
 
-// Calculate rapor average
+
 function calculateAverage() {
 
   const s1 =
