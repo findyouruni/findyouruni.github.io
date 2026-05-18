@@ -4,62 +4,60 @@ function raporToGPA(score) {
 
 // GPA → Recommended QS rank range
 function getRankRange(gpa) {
+
   if (gpa >= 3.9) return [1, 10];
   if (gpa >= 3.7) return [11, 20];
-  if (gpa >= 3.5) return [21, 35];
-  if (gpa >= 3.3) return [36, 50];
-  if (gpa >= 3.0) return [51, 70];
-  if (gpa >= 2.7) return [71, 85];
-  return [86, 100];
+  if (gpa >= 3.5) return [21, 30];
+  if (gpa >= 3.3) return [31, 40];
+  if (gpa >= 3.1) return [41, 50];
+
+  // GPA lower than 3.0
+  return [90, 100];
 }
 
 // Acceptance formula
 function acceptanceProbability(gpa, rank) {
 
-  // GPA lower than 2.0
+  // GPA below 2.0
   if (gpa < 2.0) {
     return 1;
   }
 
   let chance;
 
-  // TOP 10
+  // Top 10 universities
   if (rank <= 10) {
 
     chance =
       1 +
-      (gpa - 2.0) * 3 -
-      (11 - rank) * 0.2;
+      (gpa - 2.0) * 2;
 
     chance = Math.min(chance, 10);
-
   }
 
-  // TOP 50
+  // Top 50 universities
   else if (rank <= 50) {
 
     chance =
       5 +
-      (gpa - 2.0) * 7 -
-      (51 - rank) * 0.15;
+      (gpa - 2.0) * 5 +
+      (rank / 10);
 
     chance = Math.min(chance, 25);
-
   }
 
-  // 51–100
+  // 51–100 universities
   else {
 
     chance =
       15 +
-      (gpa - 2.0) * 10 -
-      (101 - rank) * 0.1;
+      (gpa - 2.0) * 8 +
+      ((rank - 50) / 2);
 
     chance = Math.min(chance, 50);
-
   }
 
-  // Clamp minimum
+  // Minimum 1%
   chance = Math.max(1, Math.round(chance));
 
   return chance;
@@ -78,45 +76,48 @@ function findUniversities() {
   const resultsDiv =
     document.getElementById("results");
 
-  // Empty input
+  // Validation
   if (isNaN(input)) {
 
-    resultsDiv.innerHTML =
-      `<p class="error">
+    resultsDiv.innerHTML = `
+      <p class="error">
         Please enter a valid score.
-      </p>`;
+      </p>
+    `;
 
     return;
   }
 
   // GPA validation
-  if (inputType === "gpa") {
+  if (
+    inputType === "gpa" &&
+    (input < 0 || input > 4)
+  ) {
 
-    if (input < 0 || input > 4) {
+    resultsDiv.innerHTML = `
+      <p class="error">
+        GPA must be between 0 and 4.
+        Please retry.
+      </p>
+    `;
 
-      resultsDiv.innerHTML =
-        `<p class="error">
-          GPA must be between 0 and 4.
-          Please retry.
-        </p>`;
-
-      return;
-    }
+    return;
   }
 
   // Rapor validation
-  if (inputType === "rapor") {
+  if (
+    inputType === "rapor" &&
+    (input < 0 || input > 100)
+  ) {
 
-    if (input < 0 || input > 100) {
+    resultsDiv.innerHTML = `
+      <p class="error">
+        Rapor score must be between 0 and 100.
+        Please retry.
+      </p>
+    `;
 
-      resultsDiv.innerHTML =
-        `<p class="error">
-          Rapor score must be between 0 and 100.
-          Please retry.
-        </p>`;
-
-      return;
-    }
+    return;
   }
 
   // Convert to GPA
@@ -129,7 +130,7 @@ function findUniversities() {
   const [minRank, maxRank] =
     getRankRange(gpa);
 
-  // ONLY universities inside range
+  // Filter universities
   let recommended =
     universities.filter(uni =>
       uni.rank >= minRank &&
@@ -141,21 +142,11 @@ function findUniversities() {
     a.rank - b.rank
   );
 
-  // Limit to 10
-  recommended = recommended.slice(0, 10);
-
-  // No results
-  if (recommended.length === 0) {
-
-    resultsDiv.innerHTML =
-      `<p class="error">
-        No universities found.
-      </p>`;
-
-    return;
-  }
-
-  // Create cards
+  // Show ALL universities in range
+  // (10 universities for each 10-rank range)
+  // (11 universities for 90-100)
+  
+  // Generate cards
   resultsDiv.innerHTML = `
 
     <h2>Your GPA: ${gpa.toFixed(2)}</h2>
@@ -206,6 +197,7 @@ function findUniversities() {
       }).join("")}
 
     </div>
+
   `;
 }
 
