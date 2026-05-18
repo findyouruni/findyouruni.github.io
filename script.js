@@ -122,11 +122,16 @@ function findUniversities() {
       <div class="card">
 
         <img
-          src="${uni.logo}"
-          alt="${uni.name}"
-          class="logo"
-          onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg'"
-        >
+  src="${uni.logo}"
+  alt="${uni.name}"
+  class="logo"
+  loading="lazy"
+  referrerpolicy="no-referrer"
+  onerror="
+    this.onerror=null;
+    this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/480px-No_image_available.svg.png';
+  "
+>
 
         <h2>${uni.name}</h2>
 
