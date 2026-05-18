@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <title>Find Your UNI</title>
 
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
@@ -13,8 +15,9 @@
   <div class="container">
 
     <h1>🎓 Find Your UNI</h1>
+
     <p class="subtitle">
-      Discover universities based on your GPA or rapor score
+      Discover universities from the QS Top 100 based on your GPA or rapor score.
     </p>
 
     <div class="controls">
@@ -27,14 +30,14 @@
       <input
         type="number"
         id="score"
-        placeholder="Enter your GPA or rapor score"
+        placeholder="Enter your GPA or Rapor Score"
       />
 
-      <button id="findBtn">
+      <button onclick="findUniversities()">
         Find Universities
       </button>
 
-      <button id="calcBtn">
+      <button onclick="toggleCalculator()">
         📊 Rapor Calculator
       </button>
 
@@ -44,12 +47,16 @@
 
       <h2>Rapor Average Calculator</h2>
 
-      <input type="number" id="s1" placeholder="Semester 1">
-      <input type="number" id="s2" placeholder="Semester 2">
-      <input type="number" id="s3" placeholder="Semester 3">
-      <input type="number" id="s4" placeholder="Semester 4">
+      <div class="semester-grid">
 
-      <button id="avgBtn">
+        <input type="number" id="s1" placeholder="Grade 10 Semester 1">
+        <input type="number" id="s2" placeholder="Grade 10 Semester 2">
+        <input type="number" id="s3" placeholder="Grade 11 Semester 1">
+        <input type="number" id="s4" placeholder="Grade 11 Semester 2">
+
+      </div>
+
+      <button onclick="calculateAverage()">
         Calculate Average
       </button>
 
@@ -65,4 +72,5 @@
   <script src="script.js"></script>
 
 </body>
+
 </html>
