@@ -103,7 +103,7 @@ function findUniversities() {
       ? raporToGPA(score)
       : score;
 
-  // Check database
+  // Check if data.js loaded
   if (
     typeof universities === "undefined" ||
     !Array.isArray(universities)
@@ -146,7 +146,7 @@ function findUniversities() {
 
   });
 
-  // Top 10 only
+  // Limit results
   recommended =
     recommended.slice(0, 10);
 
@@ -164,7 +164,7 @@ function findUniversities() {
     return;
   }
 
-  // Create HTML
+  // Build HTML
   let html = `
 
     <div class="summary">
@@ -243,7 +243,7 @@ function toggleCalculator() {
   calculator.classList.toggle("hidden");
 }
 
-// Calculate Average
+// Calculate Average + GPA
 function calculateAverage() {
 
   const s1 =
@@ -272,7 +272,10 @@ function calculateAverage() {
   const gpa =
     raporToGPA(average);
 
-  document.getElementById("avgResult").innerHTML = `
+  const resultDiv =
+    document.getElementById("avgResult");
+
+  resultDiv.innerHTML = `
 
     <div class="card">
 
@@ -286,7 +289,7 @@ function calculateAverage() {
       </p>
 
       <p>
-        <strong>Estimated GPA:</strong>
+        <strong>Converted GPA:</strong>
         ${gpa.toFixed(2)}
       </p>
 
@@ -300,116 +303,41 @@ document.addEventListener(
   "DOMContentLoaded",
   () => {
 
-    const button =
+    // Find Universities button
+    const findBtn =
       document.getElementById("findBtn");
 
-    if (button) {
+    if (findBtn) {
 
-      button.addEventListener(
+      findBtn.addEventListener(
         "click",
         findUniversities
       );
     }
+
+    // Calculator button
+    const calcBtn =
+      document.getElementById("calcBtn");
+
+    if (calcBtn) {
+
+      calcBtn.addEventListener(
+        "click",
+        toggleCalculator
+      );
+    }
+
+    // Calculate Average button
+    const calculateBtn =
+      document.getElementById("calculateBtn");
+
+    if (calculateBtn) {
+
+      calculateBtn.addEventListener(
+        "click",
+        calculateAverage
+      );
+    }
+
   }
 );
-  // Rank range
-  const [minRank, maxRank] =
-    getRankRange(gpa);
-
-  // Filter
-  const recommended =
-    universities.filter(uni => {
-
-      return (
-        uni &&
-        uni.name &&
-        uni.rank &&
-        uni.website &&
-        uni.rank >= minRank &&
-        uni.rank <= maxRank
-      );
-    });
-
-  // Empty
-  if (recommended.length === 0) {
-
-    resultsDiv.innerHTML = `
-      <div class="error">
-        No universities found.
-      </div>
-    `;
-
-    return;
-  }
-
-  // Build cards
-  let html = `
-
-    <div class="summary">
-
-      <h2>
-        GPA: ${gpa.toFixed(2)}
-      </h2>
-
-      <p>
-        Recommended QS Range:
-        ${minRank} - ${maxRank}
-      </p>
-
-    </div>
-
-    <div class="grid">
-  `;
-
-  recommended.slice(0, 10).forEach(uni => {
-
-    const chance =
-      acceptanceProbability(gpa, uni.rank);
-
-    html += `
-
-      <div class="card">
-
-        <div class="rank-badge">
-          #${uni.rank}
-        </div>
-
-        <h2>${uni.name}</h2>
-
-        <p>
-          <strong>QS Rank:</strong>
-          #${uni.rank}
-        </p>
-
-        <p>
-          <strong>Acceptance Rate:</strong>
-          ${chance}%
-        </p>
-
-        <button onclick="window.open('${uni.website}', '_blank')">
-          Visit Website
-        </button>
-
-      </div>
-    `;
-  });
-
-  html += `</div>`;
-
-  resultsDiv.innerHTML = html;
-}
-
-// Button listener
-document.addEventListener("DOMContentLoaded", () => {
-
-  const button =
-    document.getElementById("findBtn");
-
-  if (button) {
-
-    button.addEventListener(
-      "click",
-      findUniversities
-    );
-  }
-});
