@@ -125,11 +125,12 @@ function findUniversities() {
   src="${uni.logo}"
   alt="${uni.name}"
   class="logo"
-  loading="lazy"
+  crossorigin="anonymous"
   referrerpolicy="no-referrer"
+  loading="lazy"
   onerror="
     this.onerror=null;
-    this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/480px-No_image_available.svg.png';
+    this.src='https://placehold.co/120x120?text=University';
   "
 >
 
