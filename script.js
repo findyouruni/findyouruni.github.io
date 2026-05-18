@@ -17,7 +17,7 @@ function getRankRange(gpa) {
   return [89, 100];
 }
 
-// Acceptance Formula
+// Acceptance chance calculation
 function acceptanceProbability(gpa, rank) {
 
   if (gpa < 2.0) {
@@ -28,11 +28,16 @@ function acceptanceProbability(gpa, rank) {
     (rank * 0.22) +
     ((gpa - 2.0) * 4);
 
-  chance = Math.max(1, Math.min(25, Math.round(chance)));
+  chance = Math.round(chance);
+
+  // Clamp values
+  if (chance > 25) chance = 25;
+  if (chance < 1) chance = 1;
 
   return chance;
 }
 
+// Main function
 function findUniversities() {
 
   const inputType =
@@ -92,36 +97,58 @@ function findUniversities() {
       ? raporToGPA(score)
       : score;
 
-  // Get rank range
-  const [minRank, maxRank] = getRankRange(gpa);
+  // Get target rank range
+  const rankRange =
+    getRankRange(gpa);
 
-  // Filter universities
-  let recommended = universities.filter(uni => {
+  const minRank = rankRange[0];
+  const maxRank = rankRange[1];
 
-    return uni.rank >= minRank &&
-           uni.rank <= maxRank;
-
-  });
-
-  // Sort by rank
-  recommended.sort((a, b) => a.rank - b.rank);
-
-  // Limit to 10
-  recommended = recommended.slice(0, 10);
-
-  // No results
-  if (recommended.length === 0) {
+  // Check if universities exists
+  if (!universities || universities.length === 0) {
 
     resultsDiv.innerHTML = `
       <div class="error">
-        No universities found.
+        University database failed to load.
       </div>
     `;
 
     return;
   }
 
-  // Create cards
+  // Filter universities
+  let recommended = universities.filter(uni => {
+
+    return (
+      uni &&
+      uni.rank &&
+      uni.name &&
+      uni.website &&
+      uni.rank >= minRank &&
+      uni.rank <= maxRank
+    );
+
+  });
+
+  // Sort by QS rank
+  recommended.sort((a, b) => a.rank - b.rank);
+
+  // Maximum 10 results
+  recommended = recommended.slice(0, 10);
+
+  // No universities found
+  if (recommended.length === 0) {
+
+    resultsDiv.innerHTML = `
+      <div class="error">
+        No universities found for this score.
+      </div>
+    `;
+
+    return;
+  }
+
+  // Generate cards
   let cards = "";
 
   recommended.forEach(uni => {
@@ -158,12 +185,15 @@ function findUniversities() {
     `;
   });
 
-  // Final HTML
+  // Display final results
   resultsDiv.innerHTML = `
 
     <div class="summary">
 
-      <h2>Your GPA: ${gpa.toFixed(2)}</h2>
+      <h2>
+        Your GPA:
+        ${gpa.toFixed(2)}
+      </h2>
 
       <p>
         Recommended QS Rank Range:
@@ -182,13 +212,13 @@ function findUniversities() {
 // Toggle calculator
 function toggleCalculator() {
 
-  const calc =
+  const calculator =
     document.getElementById("calculator");
 
-  calc.classList.toggle("hidden");
+  calculator.classList.toggle("hidden");
 }
 
-// Calculate average
+// Calculate Rapor average
 function calculateAverage() {
 
   const s1 =
