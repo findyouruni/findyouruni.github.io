@@ -2,24 +2,36 @@
 <html lang="en">
 
 <head>
+
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
 
   <title>Find Your UNI</title>
 
-  <link rel="stylesheet" href="style.css"/>
+  <link
+    rel="stylesheet"
+    href="style.css"
+  />
+
 </head>
 
 <body>
 
   <div class="container">
 
-    <h1>🎓 Find Your UNI</h1>
+    <h1>
+      🎓 Find Your UNI
+    </h1>
 
     <p class="subtitle">
-      Discover universities from the QS Top 100 based on your GPA or Rapor score.
+      Discover universities based on your GPA or Rapor score.
     </p>
 
+    <!-- Controls -->
     <div class="controls">
 
       <select id="inputType">
@@ -37,10 +49,10 @@
       <input
         type="number"
         id="score"
-        placeholder="Enter your GPA or Rapor Score"
+        placeholder="Enter your GPA or Rapor score"
       />
 
-      <button onclick="findUniversities()">
+      <button id="findBtn">
         Find Universities
       </button>
 
@@ -50,16 +62,41 @@
 
     </div>
 
-    <div id="calculator" class="calculator hidden">
+    <!-- Calculator -->
+    <div
+      id="calculator"
+      class="calculator hidden"
+    >
 
-      <h2>Rapor Average Calculator</h2>
+      <h2>
+        Rapor Average Calculator
+      </h2>
 
       <div class="semester-grid">
 
-        <input type="number" id="s1" placeholder="Grade 10 Semester 1">
-        <input type="number" id="s2" placeholder="Grade 10 Semester 2">
-        <input type="number" id="s3" placeholder="Grade 11 Semester 1">
-        <input type="number" id="s4" placeholder="Grade 11 Semester 2">
+        <input
+          type="number"
+          id="s1"
+          placeholder="Grade 10 Semester 1"
+        />
+
+        <input
+          type="number"
+          id="s2"
+          placeholder="Grade 10 Semester 2"
+        />
+
+        <input
+          type="number"
+          id="s3"
+          placeholder="Grade 11 Semester 1"
+        />
+
+        <input
+          type="number"
+          id="s4"
+          placeholder="Grade 11 Semester 2"
+        />
 
       </div>
 
@@ -71,10 +108,12 @@
 
     </div>
 
+    <!-- Results -->
     <div id="results"></div>
 
   </div>
 
+  <!-- IMPORTANT ORDER -->
   <script src="data.js"></script>
   <script src="script.js"></script>
 
